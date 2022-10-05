@@ -1,0 +1,52 @@
+{% load static %}
+{% load static_version_tag %}
+{% load ExpoAppURLs %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>SSE Expo Carnival</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{% static 'Css/bootstrap.min.css' %}?{% version %}" crossorigin="anonymous">
+  <!--MAP CSS-->
+  <link rel="stylesheet" href="{% static 'ExpoSub/leaflet/leaflet.css' %}?{% version %}">
+  <link rel="stylesheet" href="{% static 'ExpoSub/mapStyle.css' %}?{% version %}" />
+</head>
+
+<body>
+  <div id="map">
+    <a id="refreshButton" href="/home" class="fa fa-arrow-left"  data-toggle="tooltip" data-placement="left" title="Back to Lobby">
+    </a>
+    <a id="resetMapButton" onclick="resetMap()" class="fa fa-repeat"  data-toggle="tooltip" data-placement="left" title="Reset Map View">
+    </a>
+    <a class="circle thought" id="whiteBoardButton"  onclick="redirectWhiteBoard()" data-toggle="tooltip" data-placement="left" title="Leave a Tweet"><i class="fa fa-commenting" aria-hidden="true" style="font-size: 5vh;"></i></i></a> 
+  </div>
+  <div id="navbar-div"></div>
+<script>
+   var HostURL = "{% HostUrl %}";
+   var HelpDeskURL = "{% HelpDeskChannel %}";
+</script>
+<script src="{% static 'JS/prerequisites.js' %}?{% version %}"></script>
+  <script src="{% static 'JS/Jquery.min.js' %}?{% version %}"></script>
+  <script src="{% static 'JS/fontawesome.js' %}?{% version %}" type="text/javascript"> </script>
+  <script src="{% static 'ExpoSub/leaflet/leaflet.js' %}?{% version %}" type="text/javascript"> </script>
+  <script src="{% static 'ExpoSub/map.js' %}?{% version %}" type="text/javascript"> </script>
+  <script src="{% static 'JS/bootstrap.min.js' %}?{% version %}" crossorigin="anonymous"></script>
+  <script src="{% static 'ExpoSub/navbar.js' %}?{% version %}" type="text/javascript"> </script>
+  <script src="{% static 'ExpoSub/blocking.js' %}?{% version %}" type="text/javascript"></script>
+
+  <script>
+    $(document).ready(function () {
+      fetchVisitedKioskList('{{ user.user_id }}')
+    });
+  </script>
+  
+{% if environ == 'LOCAL' or environ == 'DEV' %}	    
+{% include '../analytics/include.footer.analyticsTrackerDev.html' %} <!-- IAP MATOMO HOOKS -->
+{% else %}
+{% include '../analytics/include.footer.analyticsTrackerProd.html' %} <!-- IAP MATOMO HOOKS -->
+{% endif %}	  
+</body>
+
+</html>

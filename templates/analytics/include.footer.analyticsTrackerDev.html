@@ -1,0 +1,52 @@
+{% load ExpoAppURLs %}
+<!-- Javascript Trackers for Matomo and App Dynamics -->
+<script type="text/javascript" charset='UTF-8'>  
+	var matomo_assoc_name = '{{ user.name }}';
+	var matomo_assoc_mail = '{{ user.email }}';
+	var matomo_assoc_id = '{{ user.user_id}}';
+	var HostURL = '{% HostUrl %}';
+
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    //_paq.push(['setCustomDimension', 1, matomo_assoc_name]);
+
+    setTimeout(function () {
+        console.log("matomo -> " + matomo_assoc_name);
+        	_paq.push(['setUserId', matomo_assoc_id]);
+        	_paq.push(['setCustomDimension', customDimensionId = 1, customDimensionValue = matomo_assoc_name]);
+        	_paq.push(['setCustomDimension', customDimensionId = 2, customDimensionValue = matomo_assoc_mail]);
+
+          	_paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
+  			_paq.push(["setCookieDomain", "*.expodev.cerner.com"]);
+  			_paq.push(['trackPageView']);
+	 		_paq.push(['enableLinkTracking']);
+    }, 2000);
+
+    function embeddedTrackingCode() {
+
+        if (HostURL === "https://expodev.cerner.com" || HostURL === "http://localhost:8000") {
+        	var u="https://ctsinfinityprdsa01.northamerica.cerner.net/analytics/";
+    		_paq.push(['setTrackerUrl', u+'matomo.php']);
+    		_paq.push(['setSiteId', '17']);
+    		var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+    		g.type='text/javascript'; 
+    		g.async=true; 
+    		g.src=u+'matomo.js'; 
+    		s.parentNode.insertBefore(g,s);
+        }
+    }
+
+    // Checking if page is loaded before starting trackers.
+    if (window.addEventListener) {
+        window.addEventListener("load", embeddedTrackingCode, false);
+    } else if (window.attachEvent) {
+        window.attachEvent("onload", embeddedTrackingCode);
+    } else {
+        embeddedTrackingCode();
+    }
+
+</script>
+
+<noscript><p><img src="https://ctsinfinityprdsa01.northamerica.cerner.net/analytics/matomo.php?idsite=17&amp;rec=1" style="border:0;" alt="" /></p></noscript>
+
+<!-- End Matomo Code -->
